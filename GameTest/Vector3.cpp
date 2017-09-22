@@ -85,14 +85,13 @@ Vector3 Vector3::operator-(const Vector3 &vec) const
 }
 
 
-Vector3 Vector3::operator+=(const Vector3 &vec)
+Vector3& Vector3::operator+=(const Vector3 &vec)
 {
-	return Vector3(this->x + vec.x, this->y + vec.y, this->z + vec.z);
-}
+	this->x += vec.x;
+	this->y += vec.y;
+	this->z += vec.z;
 
-Vector3 Vector3::operator+=(const Vector3 &vec) const
-{
-	return Vector3(this->x + vec.x, this->y + vec.y, this->z + vec.z);
+	return *this;
 }
 
 
@@ -183,6 +182,12 @@ bool Vector3::operator<=(const Vector3 & vec) const
 Vector3 Vector3::lerp(const Vector3 curVec, const Vector3 tarVec, const float speed, const float delta)
 {
 	return curVec + Vector3(fabsf(tarVec.x - curVec.x)*(speed / 100)*delta, fabsf(tarVec.y - curVec.y)*delta, fabsf(tarVec.z - curVec.z)*(speed / 100)*delta);
+}
+
+Vector3 Vector3::absoluteCoordinate()
+{
+
+	return Vector3(round(this->x), round(this->y), round(this->z));
 }
 
 //normalize this vector

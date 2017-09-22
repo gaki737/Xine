@@ -4,6 +4,7 @@
 #include "Vector3.h"
 #include "BoundingBox.h"
 #include "Block.h"
+#include "Map.h"
 
 class Player
 {
@@ -18,14 +19,15 @@ private:
 	float pitch = 0.0f;
 	float mouseSensitivity = 0.2f;
 	float movementSpeed = 5.0f;
-	void MoveRight(double delta);
-	void MoveLeft(double delta);
-	void MoveForward(double delta);
-	void MoveBackwards(double delta);
-	void MoveUp(double delta);
-	void MoveDown(double delta);
+	float jumpHeight = 1.5f;
+	void MoveRight();
+	void MoveLeft();
+	void MoveForward();
+	void MoveBackwards();
+	void Jump();
 	void rotate(float yaw, float pitch);
 	std::vector<Block> intersections;
-	void Move();
+	void Move(double delta, float gravity = 0.0f);
 	Vector3 movementVector = Vector3(0.0f,0.0f,0.0f);
+	bool inAir = false;
 };

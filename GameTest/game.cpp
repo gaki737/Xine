@@ -120,7 +120,7 @@ bool Game::InitGL()
 
 void Game::InitializeObjects()
 {
-	this->player = Player(Vector3(0.0f, 0.0f, 10.0f), 1.8f);
+	this->player = Player(Vector3(5.0f, 20.0f, 5.0f), 1.8f);
 
 	map = Map(10, 10);
 	tex.initTexture("textures/blocks.bmp");
@@ -158,35 +158,36 @@ void Game::HandleInput()
 	}
 	if (keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP])
 	{
-		this->player.MoveForward(timer.deltaTime);
+		this->player.MoveForward();
 	}
 	if (keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN])
 	{
-		this->player.MoveBackwards(timer.deltaTime);
+		this->player.MoveBackwards();
 	}
 	if (keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT])
 	{
-		this->player.MoveLeft(timer.deltaTime);
+		this->player.MoveLeft();
 	}
 	if (keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT])
 	{
-		this->player.MoveRight(timer.deltaTime);
+		this->player.MoveRight();
 	}
 	if (keyState[SDL_SCANCODE_SPACE])
 	{
-		this->player.MoveUp(timer.deltaTime);
+		this->player.Jump();
+		//this->player.MoveUp();
 	}
 	if (keyState[SDL_SCANCODE_LCTRL])
 	{
-		this->player.MoveDown(timer.deltaTime);
+		//this->player.MoveDown();
 	}
 	if (keyState[SDL_SCANCODE_F11])
 	{
-		SDL_SetWindowSize(this->window, 1920, 1080);
+		//SDL_SetWindowSize(this->window, 1920, 1080);
 
-		setPerspective(45.0f, (1920 / 1080), 0.1, 100.0);
+		//setPerspective(45.0f, (1920 / 1080), 0.1, 100.0);
 
-		SDL_SetWindowFullscreen(this->window, SDL_WINDOW_FULLSCREEN);
+		//SDL_SetWindowFullscreen(this->window, SDL_WINDOW_FULLSCREEN);
 	}
 	if (keyState[SDL_SCANCODE_F1])
 	{
@@ -214,6 +215,7 @@ void Game::HandleInput()
 //Updating stuff with delta time 
 void Game::UpdateObjects(double delta)
 {
+	this->player.Move(timer.deltaTime, this->map.gravity);
 	this->player.intersections = *colHandler.checkPlayerBlockCollisions(this->player, this->map.blocks);
 
 

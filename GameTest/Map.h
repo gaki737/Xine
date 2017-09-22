@@ -13,7 +13,7 @@ public:
 	void findBlock(Vector3 pos);
 	std::vector<Block> blocks;
 	std::vector<Block> blockCols;
-	float gravity = 1.0f;
+	float gravity = 10.0f;
 
 private:
 };

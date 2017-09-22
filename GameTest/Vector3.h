@@ -26,8 +26,7 @@ public:
 	Vector3 operator-(const float &val) const;
 
 
-	Vector3 operator+=(const Vector3 &vec);
-	Vector3 operator+=(const Vector3 &vec) const;
+	Vector3& operator+=(const Vector3 &vec);
 
 	friend std::ostream &operator<<(std::ostream &os, const Vector3 &vec);
 	bool operator>(const Vector3 &vec);
@@ -43,4 +42,5 @@ public:
 
 	static Vector3 lerp(const Vector3 curVec, const Vector3 tarVec, const float speed, const float delta);
 
+	Vector3 absoluteCoordinate();
 };

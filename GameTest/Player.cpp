@@ -10,53 +10,40 @@ Player::Player(Vector3 pos, float height)
 	bb = BoundingBox(pos, 0.5f,0.5f, height);
 }
 
-void Player::MoveRight(double delta)
+void Player::MoveRight()
 {
-	Vector3 direction;
-
-	direction.x = delta * -sin((this->yaw - 90)*pi180);
-	direction.z = delta * cos((this->yaw - 90)*pi180);
+	this->movementVector.x += -sin((this->yaw - 90)*pi180);
+	this->movementVector.z += cos((this->yaw - 90)*pi180);
 
 }
 
-void Player::MoveLeft(double delta)
+void Player::MoveLeft()
 {
-	Vector3 direction;
-
-	direction.x = delta * -sin((this->yaw + 90)*pi180);
-	direction.z = delta * cos((this->yaw + 90)*pi180);
+	this->movementVector.x += -sin((this->yaw + 90)*pi180);
+	this->movementVector.z += cos((this->yaw + 90)*pi180);
 
 }
 
-void Player::MoveForward(double delta)
+void Player::MoveForward()
 {
-	Vector3 direction;
+	this->movementVector.x += sin((this->yaw)*pi180);
+	this->movementVector.z += -cos((this->yaw)*pi180);
+	
+}
 
-	direction.x = delta * sin((this->yaw)*pi180);
-	direction.z = delta * -cos((this->yaw)*pi180);
+void Player::MoveBackwards()
+{
+	this->movementVector.x += -sin((this->yaw)*pi180);
+	this->movementVector.z += cos((this->yaw)*pi180);
 
 }
 
-void Player::MoveBackwards(double delta)
+void Player::Jump()
 {
-	Vector3 direction;
-
-	direction.x = delta * -sin((this->yaw)*pi180);
-	direction.z = delta * cos((this->yaw)*pi180);
-
-}
-
-void Player::MoveUp(double delta)
-{
-	this->movementVector += Vector3(0, 1, 0)*delta;
-
-}
-
-void Player::MoveDown(double delta)
-{
-	Vector3 direction;
-	direction = Vector3(0, -1, 0)*delta;
-
+	if (!this->inAir)
+	{
+		this->movementVector.y = this->jumpHeight;
+	}
 }
 
 void Player::rotate(float _yaw, float _pitch)
@@ -77,9 +64,61 @@ void Player::rotate(float _yaw, float _pitch)
 	}
 }
 
-void Player::Move()
+void Player::Move(double delta, float gravity)
 {
-	this->position += this->movementVector*this->movementSpeed;
-	this->bb.moveBB(this->movementVector*this->movementSpeed);
-	this->cam.move(this->movementVector*this->movementSpeed);
+	if (!this->intersections.empty())
+	{
+		for (Block intersection : this->intersections) 
+		{
+			if (intersection.position.y <= this->position.absoluteCoordinate().y)
+			{
+				this->inAir = false;
+			}
+			else 
+			{
+				this->inAir = true;
+			}
+
+			if (intersection.position.x < this->position.absoluteCoordinate().x && this->movementVector.x < 0)
+			{
+				this->movementVector.x = 0;
+			}
+			if (intersection.position.x > this->position.absoluteCoordinate().x && this->movementVector.x > 0)
+			{
+				this->movementVector.x = 0;
+			}
+			if (intersection.position.z < this->position.absoluteCoordinate().z && this->movementVector.z < 0)
+			{
+				this->movementVector.z = 0;
+			}
+			if (intersection.position.z > this->position.absoluteCoordinate().z && this->movementVector.z > 0)
+			{
+				this->movementVector.z = 0;
+			}
+		}
+	}
+	else
+	{
+		this->inAir = true;
+	}
+
+
+	std::cout << this->inAir << "    " << this->position << "     " << this->position.absoluteCoordinate() << std::endl;
+	this->position += (this->movementVector*this->movementSpeed*delta);
+	this->bb.moveBB(this->movementVector*this->movementSpeed*delta);
+	this->cam.move(this->movementVector*this->movementSpeed*delta);
+
+	if(this->inAir)
+	{
+		this->movementVector.y += -gravity/100;
+		//std::cout << "player is in air" << std::endl;
+	}
+	else
+	{
+		this->movementVector.y = 0.0f;
+	}
+
+
+	this->movementVector = this->movementVector * Vector3(0, 1, 0);
+
 }
