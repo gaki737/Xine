@@ -8,12 +8,12 @@ class Map
 {
 public:
 	Map();
-	Map(int width, int length);
+	Map(int length, int width, int heightMin, int heightMax);
 	void Render(int rendermode);
 	void findBlock(Vector3 pos);
 	std::vector<Block> blocks;
 	std::vector<Block> blockCols;
-	float gravity = 10.0f;
+	float gravity = 3.0f;
 
 private:
 };

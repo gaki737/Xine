@@ -66,6 +66,7 @@ void Player::rotate(float _yaw, float _pitch)
 
 void Player::Move(double delta, float gravity)
 {
+	this->inAir = true;
 	if (!this->intersections.empty())
 	{
 		for (Block intersection : this->intersections) 
@@ -74,44 +75,33 @@ void Player::Move(double delta, float gravity)
 			{
 				this->inAir = false;
 			}
-			else 
-			{
-				this->inAir = true;
-			}
 
-			if (intersection.position.x < this->position.absoluteCoordinate().x && this->movementVector.x < 0)
+			if (intersection.position.x < this->position.absoluteCoordinate().x && intersection.position.y >= this->position.absoluteCoordinate().y && this->movementVector.x < 0)
 			{
 				this->movementVector.x = 0;
 			}
-			if (intersection.position.x > this->position.absoluteCoordinate().x && this->movementVector.x > 0)
+			if (intersection.position.x > this->position.absoluteCoordinate().x && intersection.position.y >= this->position.absoluteCoordinate().y && this->movementVector.x > 0)
 			{
 				this->movementVector.x = 0;
 			}
-			if (intersection.position.z < this->position.absoluteCoordinate().z && this->movementVector.z < 0)
+			if (intersection.position.z < this->position.absoluteCoordinate().z && intersection.position.y >= this->position.absoluteCoordinate().y && this->movementVector.z < 0)
 			{
 				this->movementVector.z = 0;
 			}
-			if (intersection.position.z > this->position.absoluteCoordinate().z && this->movementVector.z > 0)
+			if (intersection.position.z > this->position.absoluteCoordinate().z && intersection.position.y >= this->position.absoluteCoordinate().y && this->movementVector.z > 0)
 			{
 				this->movementVector.z = 0;
 			}
 		}
 	}
-	else
-	{
-		this->inAir = true;
-	}
 
-
-	std::cout << this->inAir << "    " << this->position << "     " << this->position.absoluteCoordinate() << std::endl;
 	this->position += (this->movementVector*this->movementSpeed*delta);
 	this->bb.moveBB(this->movementVector*this->movementSpeed*delta);
 	this->cam.move(this->movementVector*this->movementSpeed*delta);
 
 	if(this->inAir)
 	{
-		this->movementVector.y += -gravity/100;
-		//std::cout << "player is in air" << std::endl;
+		this->movementVector.y += -gravity*delta;
 	}
 	else
 	{

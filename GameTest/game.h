@@ -24,6 +24,7 @@ private:
 	void HandleInput();
 	void UpdateObjects(double delta);
 	void InitializeObjects();
+	void Game::InitializeMap(int length, int width, int heightMin, int heightMax);
 	void Render();
 	bool InitSDL();
 	bool InitWindow(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT);
@@ -36,7 +37,7 @@ private:
 
 public:
 	Game();
-	bool InitGame(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT);
+	bool InitGame(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT, int mapLenght, int mapWidth, int mapHeightMin, int mapHeightMax);
 	void RunGame();
 
 

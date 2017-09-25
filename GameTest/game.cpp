@@ -8,7 +8,7 @@ CollisonHandler colHandler;
 
 // Initialization ++
 // ==================================================================
-bool Game::InitGame(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT)
+bool Game::InitGame(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT, int mapLenght, int mapWidth, int mapHeightMin, int mapHeightMax)
 {
 	if (!this->InitSDL())
 		return false;
@@ -23,6 +23,7 @@ bool Game::InitGame(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT)
 		return false;
 
 	this->InitializeObjects();
+	this->InitializeMap(mapLenght, mapWidth, mapHeightMin, mapHeightMax);
 
 	return true;
 }
@@ -44,6 +45,7 @@ bool Game::InitSDL()
 
 	return true;
 }
+
 
 bool Game::InitWindow(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT)
 {
@@ -88,7 +90,7 @@ bool Game::InitGL()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	setPerspective(45.0f, (this->windowRect.w / this->windowRect.h), 0.1, 100.0);
+	setPerspective(80.0f, (this->windowRect.w / this->windowRect.h), 0.1, 100.0);
 	//glViewport(0, 0, this->windowRect.w, this->windowRect.h);
 
 
@@ -118,11 +120,16 @@ bool Game::InitGL()
 	return true;
 }
 
+void Game::InitializeMap(int length, int width, int heightMin, int heightMax)
+{
+	this->map = Map(length, width, heightMin, heightMax);
+
+}
+
 void Game::InitializeObjects()
 {
 	this->player = Player(Vector3(5.0f, 20.0f, 5.0f), 1.8f);
 
-	map = Map(10, 10);
 	tex.initTexture("textures/blocks.bmp");
 
 }

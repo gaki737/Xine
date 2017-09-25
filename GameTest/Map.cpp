@@ -7,7 +7,7 @@ Map::Map()
 }
 
 
-Map::Map(int width, int length)
+Map::Map(int width, int length, int heightMin, int heightMax)
 {
 	int counter = 0;
 
@@ -15,7 +15,7 @@ Map::Map(int width, int length)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			for (int y = 0; y < rand() % 5 + 1; y++)
+			for (int y = 0; y < rand() % (heightMax-heightMin+1) + heightMin; y++)
 			{
 				blocks.push_back(Block(Vector3(x, y, z), 1.0f, Color(1.0f, 1.0f, 1.0f), Vector3(), true));
 				//counter++;
