@@ -1,7 +1,7 @@
 #include "BoundingBox.h"
 
 
-
+//move the bounding box by the given vector
 void BoundingBox::moveBB(const Vector3 & dist)
 {
 	this->Center += dist;
@@ -17,6 +17,7 @@ void BoundingBox::moveBB(const Vector3 & dist)
 	this->LeftDownBack += dist;
 }
 
+//constructor of the bounding box with position and dimensions
 BoundingBox::BoundingBox(Vector3 pos, float width, float length, float height)
 {
 	this->Center = pos;

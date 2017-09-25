@@ -18,5 +18,6 @@ void Time::getDelta()
 		delta /= 1000000000;
 
 		timePrev = timeCurrent;
+		//set the deltatime to the calculated one
 		this->deltaTime = delta;
 }

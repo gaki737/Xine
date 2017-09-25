@@ -7,6 +7,7 @@ void Texture::initTexture(const char* name) {
 	//Load the image from the file into SDL's surface representation
 	SDL_Surface* surf = SDL_LoadBMP(name);
 
+
 	//Determine the data format of the surface by seeing how SDL arranges a test pixel.  This probably only works
 	//  correctly for little-endian machines.
 	GLenum data_fmt;

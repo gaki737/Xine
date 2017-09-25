@@ -7,7 +7,7 @@ Vector3::Vector3(float X, float Y, float Z)
 	this->z = Z;
 }
 
-
+//pass the vector to the stream
 std::ostream& operator<<(std::ostream &os, const Vector3 &vec)
 {
 	return os<<vec.x<<" "<<vec.y<<" "<<vec.z;
@@ -19,11 +19,13 @@ float Vector3::magnitude()
 	return sqrtf(this->x * this->x + this->y * this->y + this->z * this->z);
 }
 
-//multiply this vector by a scalar
+//multiply this vector by a float
 Vector3 Vector3::operator*(const float &num)
 {
 	return Vector3(this->x * num, this->y * num, this->z * num);
 }
+
+//multiply this vector by a float
 
 Vector3 Vector3::operator*(const float &num) const
 {
@@ -36,6 +38,7 @@ Vector3 Vector3::operator*(const Vector3 &vec)
 	return Vector3(this->x * vec.x, this->y * vec.y, this->z * vec.z);
 }
 
+//multiply this vector by another vector
 Vector3 Vector3::operator*(const Vector3 &vec) const
 {
 	return Vector3(this->x * vec.x, this->y * vec.y, this->z * vec.z);
@@ -47,27 +50,32 @@ Vector3 Vector3::operator+(const Vector3 &vec)
 	return Vector3(this->x + vec.x, this->y + vec.y, this->z + vec.z);
 }
 
+//add two vectors
 Vector3 Vector3::operator+(const Vector3 &vec) const
 {
 	return Vector3(this->x + vec.x, this->y + vec.y, this->z + vec.z);
 }
 
 
+//add a float to the vector
 Vector3 Vector3::operator+(const float &val)
 {
 	return Vector3(this->x + val, this->y + val, this->z + val);
 }
 
+//add a float to the vector
 Vector3 Vector3::operator+(const float &val) const
 {
 	return Vector3(this->x + val, this->y + val, this->z + val);
 }
 
+//substract a float from the vector
 Vector3 Vector3::operator-(const float &val)
 {
 	return Vector3(this->x - val, this->y - val, this->z - val);
 }
 
+//substract a float from the vector
 Vector3 Vector3::operator-(const float &val) const
 {
 	return Vector3(this->x - val, this->y - val, this->z - val);
@@ -79,12 +87,13 @@ Vector3 Vector3::operator-(const Vector3 &vec)
 	return Vector3(this->x - vec.x, this->y - vec.y, this->z - vec.z);
 }
 
+//substract two vectors
 Vector3 Vector3::operator-(const Vector3 &vec) const
 {
 	return Vector3(this->x - vec.x, this->y - vec.y, this->z - vec.z);
 }
 
-
+//add a vector
 Vector3& Vector3::operator+=(const Vector3 &vec)
 {
 	this->x += vec.x;
@@ -96,7 +105,7 @@ Vector3& Vector3::operator+=(const Vector3 &vec)
 
 
 
-
+//compare two vectors
 bool Vector3::operator>(const Vector3 & vec)
 {
 	if ((this->x > vec.x) &&
@@ -106,6 +115,7 @@ bool Vector3::operator>(const Vector3 & vec)
 
 }
 
+//compare two vectors
 bool Vector3::operator<(const Vector3 & vec)
 {
 	if ((this->x < vec.x) &&
@@ -116,6 +126,7 @@ bool Vector3::operator<(const Vector3 & vec)
 		return false;
 }
 
+//compare two vectors
 bool Vector3::operator>=(const Vector3 & vec)
 {
 	if ((this->x >= vec.x) &&
@@ -126,6 +137,7 @@ bool Vector3::operator>=(const Vector3 & vec)
 		return false;
 }
 
+//compare two vectors
 bool Vector3::operator<=(const Vector3 & vec)
 {
 	if ((this->x <= vec.x) &&
@@ -137,6 +149,7 @@ bool Vector3::operator<=(const Vector3 & vec)
 }
 
 
+//compare two vectors
 bool Vector3::operator>(const Vector3 & vec) const
 {
 	if ((this->x > vec.x) &&
@@ -147,6 +160,7 @@ bool Vector3::operator>(const Vector3 & vec) const
 		return false;
 }
 
+//compare two vectors
 bool Vector3::operator<(const Vector3 & vec) const
 {
 	if ((this->x < vec.x) &&
@@ -157,6 +171,7 @@ bool Vector3::operator<(const Vector3 & vec) const
 		return false;
 }
 
+//compare two vectors
 bool Vector3::operator>=(const Vector3 & vec) const
 {
 	if ((this->x >= vec.x) &&
@@ -167,6 +182,7 @@ bool Vector3::operator>=(const Vector3 & vec) const
 		return false;
 }
 
+//compare two vectors
 bool Vector3::operator<=(const Vector3 & vec) const
 {
 	if ((this->x <= vec.x) &&
@@ -178,12 +194,13 @@ bool Vector3::operator<=(const Vector3 & vec) const
 }
 
 
-
+//lerp a vector to another given by tansition speed and delta time
 Vector3 Vector3::lerp(const Vector3 curVec, const Vector3 tarVec, const float speed, const float delta)
 {
 	return curVec + Vector3(fabsf(tarVec.x - curVec.x)*(speed / 100)*delta, fabsf(tarVec.y - curVec.y)*delta, fabsf(tarVec.z - curVec.z)*(speed / 100)*delta);
 }
 
+//get the rounded coordinate
 Vector3 Vector3::absoluteCoordinate()
 {
 
