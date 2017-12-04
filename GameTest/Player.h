@@ -5,11 +5,13 @@
 #include "BoundingBox.h"
 #include "Block.h"
 #include "Map.h"
+#include "InputHandler.h"
 
 class Player
 {
 	//make game a friend
 	friend class Game;
+	friend class InputHandler;
 public:
 	//constructor with position and height
 	Player(const Vector3 pos = Vector3(0.0f, 0.0f, 0.0f), float height = 1.8f);
@@ -27,7 +29,7 @@ private:
 	//the mouse sensitivity
 	float mouseSensitivity = 0.2f;
 	//the players movementspeed
-	float movementSpeed = 5.0f;
+	float movementSpeed = 6.0f;
 	//the players jump height
 	float jumpHeight = 1.5f;
 	//move right method

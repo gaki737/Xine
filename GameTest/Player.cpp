@@ -134,7 +134,7 @@ void Player::Move(double delta, float gravity)
 	this->position += (this->movementVector*this->movementSpeed*delta);
 	//change the players bounding box position vector3 by the movementvector multiplied with the movementspeed and the delta time
 	this->bb.moveBB(this->movementVector*this->movementSpeed*delta);
-	//change the players camera position vector3 by the movementvector multiplied with the movementspeed and the delta time
+	//change the players camera position vector3 by the movementvector multiplied with the movementspeed and delta time
 	this->cam.move(this->movementVector*this->movementSpeed*delta);
 
 

@@ -127,6 +127,7 @@
     <ClInclude Include="CollisonHandler.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="CollisonHandler.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />

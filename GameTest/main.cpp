@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 	//declare the game component
 	Game game;
 	//initialize the game
-	if (!game.InitGame("Test", 400, 400, 800, 400, 100, 100, 0 , 1))
+	if (!game.InitGame("Test", 400, 400, 800, 400, 16, 16, 1, 2))
 		return -1;
 	//rin the game
 	game.RunGame();

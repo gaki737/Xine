@@ -6,6 +6,44 @@ Time timer;
 Texture tex;
 CollisonHandler colHandler;
 
+
+const double pi180 = 0.017453292519943295769236907684886;
+// pi/180
+// replacement for gluPerspective
+void setPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar) {
+	GLdouble top, bottom, left, right;
+	top = zNear * tan(pi180*fovy / 2);
+	bottom = -top;
+	right = aspect*top;
+	left = -right;
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(left, right, bottom, top, zNear, zFar);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void Game::ToggleFullscreen(SDL_Window* Window) {
+	Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
+	bool IsFullscreen = SDL_GetWindowFlags(Window) & FullscreenFlag;
+
+	if (IsFullscreen) 
+	{
+		SDL_SetWindowFullscreen(this->window, !FullscreenFlag);
+		SDL_SetWindowSize(this->window, this->windowRect.w, this->windowRect.h);
+		setPerspective(90.0f, (this->windowRect.w / this->windowRect.h), 0.1, 100.0);
+		glViewport(0, 0, this->windowRect.w, this->windowRect.h);
+	}
+	else
+	{
+		SDL_SetWindowFullscreen(this->window, FullscreenFlag);
+		SDL_SetWindowSize(this->window, 1920, 1080);
+		setPerspective(90.0f, (1920 / 1080), 0.1, 100.0);
+		glViewport(0, 0, 1920, 1080);
+
+	}
+
+	}
+
 // Initialization ++
 // ==================================================================
 bool Game::InitGame(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT, int mapLenght, int mapWidth, int mapHeightMin, int mapHeightMax)
@@ -52,8 +90,7 @@ bool Game::InitWindow(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT)
 	this->windowRect = { POSX, POSY, WIDTH, HEIGHT };
 	this->quit = false;
 	//window = SDL_CreateWindow( "Server", posX, posY, sizeX, sizeY, 0 );
-	this->window = SDL_CreateWindow(TITLE, this->windowRect.x, this->windowRect.y, this->windowRect.w, this->windowRect.h, SDL_WINDOW_OPENGL);
-
+	this->window = SDL_CreateWindow(TITLE, this->windowRect.x, this->windowRect.y, this->windowRect.w, this->windowRect.h, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS);
 	if (this->window == nullptr)
 	{
 		std::cout << "Failed to create window : " << SDL_GetError();
@@ -67,21 +104,8 @@ bool Game::InitWindow(char* TITLE, int POSX, int POSY, int WIDTH, int HEIGHT)
 	return true;
 }
 
-const double pi180 = 0.017453292519943295769236907684886;
-// pi/180
 
-// replacement for gluPerspective
-void setPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar) {
-	GLdouble top, bottom, left, right;
-	top = zNear * tan(pi180*fovy / 2);
-	bottom = -top;
-	right = aspect*top;
-	left = -right;
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glFrustum(left, right, bottom, top, zNear, zFar);
-	glMatrixMode(GL_MODELVIEW);
-}
+
 
 bool Game::InitGL()
 {
@@ -91,7 +115,7 @@ bool Game::InitGL()
 	glLoadIdentity();
 
 	setPerspective(80.0f, (this->windowRect.w / this->windowRect.h), 0.1, 100.0);
-	//glViewport(0, 0, this->windowRect.w, this->windowRect.h);
+	glViewport(0, 0, this->windowRect.w, this->windowRect.h);
 
 
 	if (glGetError() != GL_NO_ERROR)
@@ -140,7 +164,7 @@ void Game::RunGame()
 	while (!this->quit)
 	{
 		timer.getDelta();
-		this->HandleInput();
+		this->inputHandler.HandleInput();
 		this->UpdateObjects(timer.deltaTime);
 
 		this->Render();
@@ -148,76 +172,7 @@ void Game::RunGame()
 	tex.delTexture();
 }
 
-//Handles Input
-void Game::HandleInput()
-{
 
-
-
-	const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-	SDL_Event event;
-
-
-
-	if (keyState[SDL_SCANCODE_ESCAPE])
-	{
-		quit = true;
-	}
-	if (keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP])
-	{
-		this->player.MoveForward();
-	}
-	if (keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN])
-	{
-		this->player.MoveBackwards();
-	}
-	if (keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT])
-	{
-		this->player.MoveLeft();
-	}
-	if (keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT])
-	{
-		this->player.MoveRight();
-	}
-	if (keyState[SDL_SCANCODE_SPACE])
-	{
-		this->player.Jump();
-		//this->player.MoveUp();
-	}
-	if (keyState[SDL_SCANCODE_LCTRL])
-	{
-		//this->player.MoveDown();
-	}
-	if (keyState[SDL_SCANCODE_F11])
-	{
-		//SDL_SetWindowSize(this->window, 1920, 1080);
-
-		//setPerspective(45.0f, (1920 / 1080), 0.1, 100.0);
-
-		//SDL_SetWindowFullscreen(this->window, SDL_WINDOW_FULLSCREEN);
-	}
-	if (keyState[SDL_SCANCODE_F1])
-	{
-		this->renderMode = Renderer::renderModes::Normal;
-	}
-	if (keyState[SDL_SCANCODE_F2])
-	{
-		this->renderMode = Renderer::renderModes::Debug;
-	}
-
-
-	while (SDL_PollEvent(&event))
-	{
-
-		if (event.type == SDL_QUIT)
-			quit = true;
-
-		if (event.type == SDL_MOUSEMOTION)
-		{
-			this->player.rotate(event.motion.xrel, event.motion.yrel);
-		}
-	}
-}
 
 //Updating stuff with delta time 
 void Game::UpdateObjects(double delta)

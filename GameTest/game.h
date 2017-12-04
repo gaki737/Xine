@@ -12,10 +12,15 @@
 #include "Texture.h"
 #include "CollisonHandler.h"
 #include "Renderer.h"
+#include "InputHandler.h"
 
 class Game
 {
+
+	//makes the InputHandler friend
+	friend class InputHandler;
 private:
+	void ToggleFullscreen(SDL_Window* Window);
 	//the windows title
 	char* TITLE;
 	//the coordinate and dimension of the window
@@ -26,8 +31,6 @@ private:
 	SDL_GLContext context;
 	//is the game quitting
 	bool quit;
-	//the method to handle input
-	void HandleInput();
 	//the method to update the objects
 	void UpdateObjects(double delta);
 	//initialize the objects
@@ -45,10 +48,13 @@ private:
 	//the player reference
 	Player player;
 	//the map reference
-	Map map;
+	Map map; 
 
 	//the currently set renderMode 
 	int renderMode = Renderer::renderModes::Normal;
+
+	//the InputHandler
+	InputHandler inputHandler = InputHandler(this);
 
 
 public:
